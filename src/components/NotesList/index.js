@@ -12,11 +12,39 @@ const styles = {
 };
 
 const Notes = (props) => {
-  const { notes, isFetching, fetchNotes } = props;
+  const {
+    notes,
+    isFetching,
+    fetchNotes,
+    deleteNote,
+    setIsDeleting,
+    handleToast,
+  } = props;
+
+  async function handleDeleteNote(item) {
+    setIsDeleting(true);
+    const response = await deleteNote(item);
+
+    handleToast(response === 500, {
+      success: "Note successfully deleted.",
+      error: "Error deleting note.",
+    });
+
+    if (response === 200) {
+      setIsDeleting(false);
+    }
+  }
 
   const renderItem = (item) => {
     return (
-      <List.Item style={styles.item}>
+      <List.Item
+        style={styles.item}
+        actions={[
+          <p className="delete-button" onClick={() => handleDeleteNote(item)}>
+            Delete
+          </p>,
+        ]}
+      >
         <List.Item.Meta title={item.name} description={item.description} />
       </List.Item>
     );
