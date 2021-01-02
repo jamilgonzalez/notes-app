@@ -1,0 +1,30 @@
+.app-container {
+  margin: 30px;
+  padding-top: 50px;
+}
+
+.input-container {
+  padding: 30px 50px 10px;
+}
+
+.input-container .input-name-item .MuiFormControl-root {
+  width: 100%;
+}
+.input-container .input-description-item .MuiFormControl-root {
+  width: 100%;
+  padding: 20px 0 0 0;
+}
+
+.button-container {
+  padding: 10px 50px 5px;
+}
+
+.button-container Button {
+  text-transform: none;
+  background-color: grey;
+  color: white;
+}
+
+.button-container Button:hover {
+  color: grey;
+}

@@ -1,0 +1,163 @@
+type Notes {
+  id: ID!
+  clientId: ID
+  name: String!
+  description: String
+  completed: Boolean
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelNotesConnection {
+  items: [Notes]
+  nextToken: String
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+input ModelNotesFilterInput {
+  id: ModelIDInput
+  clientId: ModelIDInput
+  name: ModelStringInput
+  description: ModelStringInput
+  completed: ModelBooleanInput
+  and: [ModelNotesFilterInput]
+  or: [ModelNotesFilterInput]
+  not: ModelNotesFilterInput
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+type Query {
+  getNotes(id: ID!): Notes
+  listNotess(filter: ModelNotesFilterInput, limit: Int, nextToken: String): ModelNotesConnection
+}
+
+input CreateNotesInput {
+  id: ID
+  clientId: ID
+  name: String!
+  description: String
+  completed: Boolean
+}
+
+input UpdateNotesInput {
+  id: ID!
+  clientId: ID
+  name: String
+  description: String
+  completed: Boolean
+}
+
+input DeleteNotesInput {
+  id: ID
+}
+
+type Mutation {
+  createNotes(input: CreateNotesInput!, condition: ModelNotesConditionInput): Notes
+  updateNotes(input: UpdateNotesInput!, condition: ModelNotesConditionInput): Notes
+  deleteNotes(input: DeleteNotesInput!, condition: ModelNotesConditionInput): Notes
+}
+
+input ModelNotesConditionInput {
+  clientId: ModelIDInput
+  name: ModelStringInput
+  description: ModelStringInput
+  completed: ModelBooleanInput
+  and: [ModelNotesConditionInput]
+  or: [ModelNotesConditionInput]
+  not: ModelNotesConditionInput
+}
+
+type Subscription {
+  onCreateNotes: Notes @aws_subscribe(mutations: ["createNotes"])
+  onUpdateNotes: Notes @aws_subscribe(mutations: ["updateNotes"])
+  onDeleteNotes: Notes @aws_subscribe(mutations: ["deleteNotes"])
+}
