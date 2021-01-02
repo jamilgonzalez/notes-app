@@ -17,6 +17,9 @@ function App() {
     fetchNotes,
     createNote,
     isFetching,
+    deleteNote,
+    isDeleting,
+    setIsDeleting,
   } = useNotes();
 
   const {
@@ -28,12 +31,13 @@ function App() {
     setMessage,
   } = useToast();
 
-  const handleToast = () => {
-    setIsError(false);
-    setMessage({
-      success: "Note successfully added.",
-      error: "Error adding note.",
-    });
+  const handleToast = (error, message) => {
+    if (error) {
+      setIsError(true);
+    } else {
+      setIsError(false);
+    }
+    setMessage(message);
     setOpen(true);
   };
 
@@ -47,7 +51,14 @@ function App() {
   );
 
   const getNotes = (
-    <Notes notes={notes} isFetching={isFetching} fetchNotes={fetchNotes} />
+    <Notes
+      notes={notes}
+      isFetching={isFetching}
+      fetchNotes={fetchNotes}
+      deleteNote={deleteNote}
+      setIsDeleting={setIsDeleting}
+      handleToast={handleToast}
+    />
   );
   const getToast = (
     <Toast open={open} setOpen={setOpen} isError={isError} message={message} />

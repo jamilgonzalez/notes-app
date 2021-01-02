@@ -19,7 +19,7 @@ const Form = (props) => {
     setDescription("");
   };
 
-  const submit = () => {
+  async function submit() {
     setIsSubmitting(true);
     if (name !== "" && description !== "") {
       const newNote = {
@@ -28,12 +28,19 @@ const Form = (props) => {
         completed: false,
         id: name,
       };
-      createNote(newNote);
-      handleToast();
-      clearInputFields();
-      setIsSubmitting(false);
+      const response = await createNote(newNote);
+
+      handleToast(response === 500, {
+        success: "Note successfully added.",
+        error: "Error adding note.",
+      });
+      console.log(response);
+      if (response === 200) {
+        clearInputFields();
+        setIsSubmitting(false);
+      }
     }
-  };
+  }
 
   const getForm = (
     <Grid container className="input-container">
