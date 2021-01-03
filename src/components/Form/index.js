@@ -1,5 +1,11 @@
 import { Button, Grid, TextField } from "@material-ui/core";
 import React, { useState } from "react";
+import {
+  isFailedResponse,
+  isSuccessfulResponse,
+} from "../../utils/staticUtils";
+
+import { isFormValid } from "../../utils/formUtils";
 
 const Form = (props) => {
   const { setIsSubmitting, isSubmitting, createNote, handleToast } = props;
@@ -19,23 +25,25 @@ const Form = (props) => {
     setDescription("");
   };
 
-  async function submit() {
+  async function submitCreateNote() {
     setIsSubmitting(true);
-    if (name !== "" && description !== "") {
+
+    if (isFormValid(name, description)) {
       const newNote = {
         name: name,
         description: description,
         completed: false,
         id: name,
       };
+
       const response = await createNote(newNote);
 
-      handleToast(response === 500, {
+      handleToast(isFailedResponse(response), {
         success: "Note successfully added.",
         error: "Error adding note.",
       });
-      console.log(response);
-      if (response === 200) {
+
+      if (isSuccessfulResponse(response)) {
         clearInputFields();
         setIsSubmitting(false);
       }
@@ -54,6 +62,7 @@ const Form = (props) => {
           value={name}
         />
       </Grid>
+
       <Grid item xs={12} className="input-description-item">
         <TextField
           error={description === "" && isSubmitting}
@@ -76,7 +85,7 @@ const Form = (props) => {
       <Button
         variant="outlined"
         className="create-note-button"
-        onClick={() => submit()}
+        onClick={() => submitCreateNote()}
       >
         Create Note
       </Button>
@@ -84,10 +93,10 @@ const Form = (props) => {
   );
 
   return (
-    <>
+    <Grid container className="form-container">
       {getForm}
       {getButton}
-    </>
+    </Grid>
   );
 };
 

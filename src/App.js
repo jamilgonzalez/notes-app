@@ -3,7 +3,7 @@ import "./App.css";
 
 import Form from "./components/Form/index";
 import { Grid } from "@material-ui/core";
-import Notes from "./components/NotesList";
+import Notes from "./components/Notes";
 import React from "react";
 import Toast from "./components/Toast";
 import { useNotes } from "./hooks/useNotes";
@@ -12,14 +12,17 @@ import { useToast } from "./hooks/useToast";
 function App() {
   const {
     notes,
+    setNotes,
     isSubmitting,
     setIsSubmitting,
     fetchNotes,
     createNote,
     isFetching,
     deleteNote,
-    isDeleting,
     setIsDeleting,
+    updateNote,
+    iCreated,
+    setICreated,
   } = useNotes();
 
   const {
@@ -37,6 +40,7 @@ function App() {
     } else {
       setIsError(false);
     }
+
     setMessage(message);
     setOpen(true);
   };
@@ -57,9 +61,14 @@ function App() {
       fetchNotes={fetchNotes}
       deleteNote={deleteNote}
       setIsDeleting={setIsDeleting}
+      updateNote={updateNote}
       handleToast={handleToast}
+      setNotes={setNotes}
+      iCreated={iCreated}
+      setICreated={setICreated}
     />
   );
+
   const getToast = (
     <Toast open={open} setOpen={setOpen} isError={isError} message={message} />
   );
