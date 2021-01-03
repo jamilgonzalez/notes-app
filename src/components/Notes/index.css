@@ -6,3 +6,8 @@
   color: red;
   cursor: pointer;
 }
+
+.update-button:hover {
+  color: blue;
+  cursor: pointer;
+}
