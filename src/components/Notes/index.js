@@ -78,12 +78,7 @@ const Notes = (props) => {
   }
 
   async function submitUpdateNote(item) {
-    const response = await updateNote(item);
-
-    handleToast(isFailedResponse(response), {
-      success: "Note successfully updated.",
-      error: "Error updating note.",
-    });
+    await updateNote(item);
   }
 
   const getActions = (item) => {
