@@ -15,7 +15,6 @@ export const useNotes = () => {
   const [isFetching, setIsFetching] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
-  const [iCreated, setICreated] = useState(false);
 
   async function fetchNotes() {
     setIsFetching(true);
@@ -33,15 +32,14 @@ export const useNotes = () => {
   async function createNote(newNote) {
     // add note to db
     setIsSubmitting(true);
+    // add to state
+    setNotes([...notes, newNote]);
     try {
       await API.graphql({
         query: CreateNotes,
         variables: { input: newNote },
       });
-      // add to state
-      setNotes([...notes, newNote]);
       setIsSubmitting(false);
-      setICreated(true);
       return 200;
     } catch (err) {
       console.log(err);
@@ -52,13 +50,13 @@ export const useNotes = () => {
   async function deleteNote({ id }) {
     // delete from db
     setIsDeleting(true);
+    // delete from state
+    setNotes(notes.filter((note) => note.id !== id));
     try {
       await API.graphql({
         query: DeleteNotes,
         variables: { input: { id } },
       });
-      // delete from state
-      setNotes(notes.filter((note) => note.id !== id));
       setIsDeleting(false);
       return 200;
     } catch (err) {
@@ -112,7 +110,5 @@ export const useNotes = () => {
     isUpdating,
     setIsUpdating,
     updateNote,
-    iCreated,
-    setICreated,
   };
 };
