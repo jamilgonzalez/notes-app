@@ -33,33 +33,24 @@ const Notes = (props) => {
     updateNote,
     handleToast,
     setNotes,
-    iCreated,
-    setICreated,
   } = props;
 
   useEffect(() => {
     fetchNotes();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const subscription = API.graphql({
-      query: onCreateNotes,
-    }).subscribe({
-      next: (noteData) => {
-        const newNote = noteData.value.data.onCreateNotes;
-        const nextState = produce((draftNotes) => {
-          draftNotes.push(newNote);
-        });
 
-        // TODO: find a better to use this functionality
-        if (iCreated) {
-          setICreated(false);
-          return;
-        } else {
-          setNotes(nextState(notes));
-        }
-      },
-    });
+    // const subscription = API.graphql({
+    //   query: onCreateNotes,
+    // }).subscribe({
+    //   next: (noteData) => {
+    //     const newNote = noteData.value.data.onCreateNotes;
+    //     const nextState = produce((draftNotes) => {
+    //       draftNotes.push(newNote);
+    //     });
+    //     setNotes(nextState(notes));
+    //   },
+    // });
 
-    return () => subscription.unsubscribe();
+    // return () => subscription.unsubscribe();
   }, []);
 
   async function submitDeleteNote(item) {
