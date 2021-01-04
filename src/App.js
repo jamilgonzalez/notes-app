@@ -74,7 +74,7 @@ function App() {
   );
 
   return (
-    <Grid className="app-container">
+    <Grid container className="app-container">
       {getForm}
       {getNotes}
       {open && getToast}
